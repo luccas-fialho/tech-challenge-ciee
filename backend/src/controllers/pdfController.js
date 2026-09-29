@@ -37,26 +37,31 @@ function extrairCampos(texto) {
   const emailMatch = texto.match(emailRegex);
   const email = emailMatch ? emailMatch[0] : null;
 
-  // Telefone: foca em formatos válidos no Brasil com ou sem DDD
-  const telefoneRegex = /(?:\+?55\s?)?(?:\(?\d{2}\)?[\s.-]?)?\d{4,5}[\s.-]?\d{4}/;
+  // Telefone: foca em formatos válidos no Brasil com ou sem DDD, muito mais tolerante a espaços
+  const telefoneRegex = /(?:\+?[\d]{1,3}\s?)?(?:\(?\d{2,3}\)?[\s.-]?)?\d{4,5}[\s.-]?\d{4}/;
   const telefoneMatch = texto.match(telefoneRegex);
   const telefone = telefoneMatch ? telefoneMatch[0].trim() : null;
 
-  // Nome: primeira linha com tamanho razoável que não seja "currículo"
+  // Nome: pega a primeira linha não numerica que aparente ter nome e sobrenome
   const linhas = texto.split('\n').map((l) => l.trim()).filter(Boolean);
   let nomeCompleto = null;
-  const palavrasIgnoradas = ['curriculo', 'curriculum', 'vitae', 'resume', 'dados pessoais'];
+  const palavrasIgnoradas = ['curriculo', 'curriculum', 'vitae', 'resume', 'dados pessoais', 'perfil', 'portifolio', 'github'];
   
   for (const linha of linhas) {
     const textoLimpo = linha.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    if (linha.length < 3 || linha.length > 100) continue;
-    if (palavrasIgnoradas.some((p) => textoLimpo.includes(p))) continue;
-    // Evita pegar linhas que são apenas números ou links
-    if (/^[\d\s\W]+$/.test(linha)) continue;
-    if (linha.includes('http')) continue;
     
-    nomeCompleto = linha;
-    break;
+    // Ignora linhas muito curtas ou muito longas
+    if (linha.length < 3 || linha.length > 80) continue;
+    // Ignora se contém palavras de cabeçalho
+    if (palavrasIgnoradas.some((p) => textoLimpo.includes(p))) continue;
+    // Ignora se for link, e-mail ou composto de muitos números/símbolos
+    if (linha.includes('@') || linha.includes('http') || /[\d:;!?_-]/.test(linha)) continue;
+    
+    // Assume que um nome possui pelo menos um espaço (Nome Sobrenome)
+    if (linha.trim().includes(' ')) {
+      nomeCompleto = linha;
+      break;
+    }
   }
 
   return { nomeCompleto, email, telefone };
@@ -64,14 +69,8 @@ function extrairCampos(texto) {
 
 /**
  * POST /api/candidatos/parse-pdf
- * Recebe um arquivo PDF via multipart/form-data (campo: "curriculo"),
- * extrai texto e tenta identificar nome, e-mail e telefone do candidato.
- *
- * Esse endpoint é totalmente independente do cadastro manual — serve apenas
- * para pré-preencher o formulário no frontend.
  */
 async function parsePdf(req, res) {
-  // Middleware multer executado inline para capturar erros do multer corretamente
   const uploadMiddleware = upload.single('curriculo');
 
   uploadMiddleware(req, res, async (err) => {
@@ -90,6 +89,13 @@ async function parsePdf(req, res) {
       return res.status(400).json({ error: 'Nenhum arquivo enviado. Envie um PDF no campo "curriculo".' });
     }
 
+    // Intercepta e silencia os warnings poluentes do "pdf.js" (ex: Warning: TT: undefined function...)
+    const originalWarn = console.warn;
+    console.warn = (...args) => {
+      if (args[0] && typeof args[0] === 'string' && args[0].includes('Warning: TT:')) return;
+      originalWarn(...args);
+    };
+
     try {
       const resultado = await pdfParse(req.file.buffer);
       const campos = extrairCampos(resultado.text);
@@ -100,6 +106,9 @@ async function parsePdf(req, res) {
       return res.status(400).json({
         error: 'Não foi possível ler o arquivo PDF. Verifique se o arquivo não está corrompido ou protegido por senha.',
       });
+    } finally {
+      // Restaura o console.warn original
+      console.warn = originalWarn;
     }
   });
 }
