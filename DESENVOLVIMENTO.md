@@ -95,6 +95,8 @@ A IA foi utilizada como **par de programação acelerado**, responsável pela ge
 - Ajuste na heurística de extração de nome do PDF (a IA propôs abordagem muito simples)
 - Revisão das validações do express-validator para cobrir edge cases
 - Ajuste no proxy do Vite para funcionar corretamente com o backend
+- Remoção de uma rota 'editar' que apenas criava outro candidato
+- Remoção de um script que criava o pdf do curriculo fictício
 
 ---
 
