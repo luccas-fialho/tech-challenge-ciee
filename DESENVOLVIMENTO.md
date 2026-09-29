@@ -14,6 +14,7 @@ O desafio foi organizado em etapas sequenciais, priorizando a integração funci
 ### Priorização
 
 Como o prazo é curto, priorizei:
+
 - Funcionalidade completa dos dois fluxos de cadastro (manual e PDF)
 - Validações corretas em ambas as camadas
 - Código limpo e organizado
@@ -27,15 +28,15 @@ Itens que ficariam para uma segunda iteração com mais tempo: testes E2E, auten
 
 ### Stack
 
-| Decisão | Motivo |
-|---------|--------|
-| **React + Vite** | Build rápido, excelente DX, padrão de mercado |
-| **Tailwind CSS** | Produtividade sem sair do HTML, fácil de customizar |
-| **React Hook Form + Zod** | Performance (sem re-renders desnecessários), validação type-safe e reutilizável |
-| **Node.js + Express** | Leve, flexível, amplamente conhecido |
-| **Prisma ORM** | Migrations automáticas, type-safety, suporte nativo ao SQL Server |
-| **pdf-parse** | Biblioteca madura, sem dependências externas pesadas, suficiente para extração básica de texto |
-| **Docker para SQL Server** | Ambiente isolado, reproduzível, sem instalação local do SQL Server |
+| Decisão                    | Motivo                                                                                         |
+| -------------------------- | ---------------------------------------------------------------------------------------------- |
+| **React + Vite**           | Build rápido, excelente DX, padrão de mercado                                                  |
+| **Tailwind CSS**           | Produtividade sem sair do HTML, fácil de customizar                                            |
+| **React Hook Form + Zod**  | Performance (sem re-renders desnecessários), validação type-safe e reutilizável                |
+| **Node.js + Express**      | Leve, flexível, amplamente conhecido                                                           |
+| **Prisma ORM**             | Migrations automáticas, type-safety, suporte nativo ao SQL Server                              |
+| **pdf-parse**              | Biblioteca madura, sem dependências externas pesadas, suficiente para extração básica de texto |
+| **Docker para SQL Server** | Ambiente isolado, reproduzível, sem instalação local do SQL Server                             |
 
 ### Separação de responsabilidades
 
@@ -46,10 +47,13 @@ Itens que ficariam para uma segunda iteração com mais tempo: testes E2E, auten
 ### Tratamento de erros
 
 Todos os erros seguem o formato:
+
 ```json
 { "error": "Mensagem em português", "details": [] }
 ```
+
 E os sucessos:
+
 ```json
 { "data": { ... } }
 ```
@@ -66,23 +70,23 @@ A IA foi utilizada como **par de programação acelerado**, responsável pela ge
 
 #### Etapas onde a IA ajudou:
 
-| Etapa | Contribuição da IA |
-|-------|-------------------|
-| Scaffolding inicial | Gerou estrutura de pastas, package.json, configurações |
-| Schema Prisma | Gerou o modelo inicial da tabela `Candidato` |
-| Controllers e rotas | Gerou o esqueleto das rotas Express e controllers |
-| Componentes React | Gerou os componentes de UI (formulário, listagem, detalhes) |
-| Regex do PDF | Auxiliou na elaboração das expressões regulares para extração |
-| Testes Jest | Gerou os casos de teste iniciais com mocks do Prisma |
-| Documentação | Auxiliou na estruturação do README |
+| Etapa               | Contribuição da IA                                            |
+| ------------------- | ------------------------------------------------------------- |
+| Scaffolding inicial | Gerou estrutura de pastas, package.json, configurações        |
+| Schema Prisma       | Gerou o modelo inicial da tabela `Candidato`                  |
+| Controllers e rotas | Gerou o esqueleto das rotas Express e controllers             |
+| Componentes React   | Gerou os componentes de UI (formulário, listagem, detalhes)   |
+| Regex do PDF        | Auxiliou na elaboração das expressões regulares para extração |
+| Testes Jest         | Gerou os casos de teste iniciais com mocks do Prisma          |
+| Documentação        | Auxiliou na estruturação do README                            |
 
 #### Exemplos de prompts utilizados:
 
-> *"Crie o schema Prisma para SQL Server com os campos: nomeCompleto, email, telefone, areaInteresse, resumoProfissional"*
+> _"Crie o schema Prisma para SQL Server com os campos: nomeCompleto, email, telefone, areaInteresse, resumoProfissional"_
 
-> *"Implemente o endpoint POST /api/candidatos/parse-pdf usando multer e pdf-parse, com validação de tipo e tamanho"*
+> _"Implemente o endpoint POST /api/candidatos/parse-pdf usando multer e pdf-parse, com validação de tipo e tamanho"_
 
-> *"Crie o componente FormularioCandidato com React Hook Form e Zod, incluindo a seção de upload de PDF opcional"*
+> _"Crie o componente FormularioCandidato com React Hook Form e Zod, incluindo a seção de upload de PDF opcional"_
 
 ### O que precisei corrigir ou adaptar
 
@@ -106,16 +110,16 @@ A IA foi utilizada como **par de programação acelerado**, responsável pela ge
 
 ## 5. Tempo aproximado dedicado
 
-| Atividade | Tempo estimado |
-|-----------|---------------|
-| Leitura e planejamento | ~30 min |
-| Configuração da infraestrutura | ~20 min |
-| Backend (rotas, controllers, validações) | ~1h 30min |
-| Frontend (páginas, componentes) | ~1h 30min |
-| Integração e ajustes | ~30 min |
-| Testes | ~30 min |
-| Documentação | ~30 min |
-| **Total** | **~5 horas** |
+| Atividade                                | Tempo estimado |
+| ---------------------------------------- | -------------- |
+| Leitura e planejamento                   | ~30 min        |
+| Configuração da infraestrutura           | ~20 min        |
+| Backend (rotas, controllers, validações) | ~1h 30min      |
+| Frontend (páginas, componentes)          | ~1h 30min      |
+| Integração e ajustes                     | ~30 min        |
+| Testes                                   | ~30 min        |
+| Documentação                             | ~30 min        |
+| **Total**                                | **~5 horas**   |
 
 ---
 
@@ -165,12 +169,12 @@ A extração de dados do PDF é baseada em **heurísticas simples** e tem limita
 Ao realizar os testes finais de integração, foram identificados e corrigidos dois bugs importantes:
 
 1. **Bug nos Detalhes do Candidato:** O frontend não exibia as informações após clicar em "Ver Detalhes".
-   - *Causa:* O backend empacota todas as respostas dentro de um objeto `{ data: ... }` (padrão de API). O arquivo `api.js` do frontend estava retornando `response.data`, fazendo com que os componentes esperassem campos na raiz, quando na verdade estavam dentro de `dados.data`.
-   - *Correção:* Ajustado o `api.js` para retornar sempre `response.data.data`.
+   - _Causa:_ O backend empacota todas as respostas dentro de um objeto `{ data: ... }` (padrão de API). O arquivo `api.js` do frontend estava retornando `response.data`, fazendo com que os componentes esperassem campos na raiz, quando na verdade estavam dentro de `dados.data`.
+   - _Correção:_ Ajustado o `api.js` para retornar sempre `response.data.data`.
 
 2. **Bug na Extração de Dados do PDF:** O parsing falhava e retornava mensagem de arquivo não enviado, além de ser frágil em PDFs reais.
-   - *Causa 1:* O `FormData` do frontend enviava o arquivo com a chave `'pdf'`, mas o `multer` do backend esperava a chave `'curriculo'`.
-   - *Causa 2:* As heurísticas de RegEx para telefone capturavam falsos-positivos e a heurística de nome capturava palavras como "Currículo".
-   - *Correção:* Alinhado o nome do campo para `'curriculo'` no frontend, atualizada a RegEx de telefone e adicionado um filtro de palavras ignoradas (como "curriculum", "vitae", etc) na leitura do PDF.
+   - _Causa 1:_ O `FormData` do frontend enviava o arquivo com a chave `'pdf'`, mas o `multer` do backend esperava a chave `'curriculo'`.
+   - _Causa 2:_ As heurísticas de RegEx para telefone capturavam falsos-positivos e a heurística de nome capturava palavras como "Currículo".
+   - _Correção:_ Alinhado o nome do campo para `'curriculo'` no frontend, atualizada a RegEx de telefone e adicionado um filtro de palavras ignoradas (como "curriculum", "vitae", etc) na leitura do PDF.
 
 Estas melhorias garantiram uma experiência robusta mesmo para PDFs fora do padrão fictício gerado e assegurou que as listagens renderizassem os valores corretamente.

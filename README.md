@@ -4,23 +4,23 @@ Sistema web para cadastro e consulta de candidatos, com suporte a preenchimento 
 
 ## Tecnologias utilizadas
 
-| Camada | Tecnologia | Versão |
-|--------|-----------|--------|
-| Frontend | React | 18.x |
-| Build Tool | Vite | 5.x |
-| Estilização | Tailwind CSS | 3.x |
-| Roteamento | React Router DOM | 6.x |
-| Formulários | React Hook Form | 7.x |
-| Validação | Zod | 3.x |
-| HTTP Client | Axios | 1.x |
-| Backend | Node.js | 20.x |
-| Framework | Express | 4.x |
-| ORM | Prisma | 5.x |
-| Banco de dados | SQL Server | 2022 |
-| Extração PDF | pdf-parse | 1.x |
-| Upload | Multer | 1.x |
-| Validação API | express-validator | 7.x |
-| Container DB | Docker / Docker Compose | - |
+| Camada         | Tecnologia              | Versão |
+| -------------- | ----------------------- | ------ |
+| Frontend       | React                   | 18.x   |
+| Build Tool     | Vite                    | 5.x    |
+| Estilização    | Tailwind CSS            | 3.x    |
+| Roteamento     | React Router DOM        | 6.x    |
+| Formulários    | React Hook Form         | 7.x    |
+| Validação      | Zod                     | 3.x    |
+| HTTP Client    | Axios                   | 1.x    |
+| Backend        | Node.js                 | 20.x   |
+| Framework      | Express                 | 4.x    |
+| ORM            | Prisma                  | 5.x    |
+| Banco de dados | SQL Server              | 2022   |
+| Extração PDF   | pdf-parse               | 1.x    |
+| Upload         | Multer                  | 1.x    |
+| Validação API  | express-validator       | 7.x    |
+| Container DB   | Docker / Docker Compose | -      |
 
 ---
 
@@ -35,8 +35,8 @@ Sistema web para cadastro e consulta de candidatos, com suporte a preenchimento 
 ## 1. Clonar o repositório
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
-cd desafio-tecnico-ciee
+git clone https://github.com/luccas-fialho/tech-challenge-ciee.git
+cd tech-challenge-ciee
 ```
 
 ---
@@ -156,12 +156,12 @@ desafio-tecnico-ciee/
 
 ## 7. Endpoints da API
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| `GET` | `/api/candidatos` | Lista todos os candidatos |
-| `GET` | `/api/candidatos/:id` | Detalhes de um candidato |
-| `POST` | `/api/candidatos` | Cria um novo candidato |
-| `POST` | `/api/candidatos/parse-pdf` | Extrai dados de um PDF |
+| Método | Endpoint                    | Descrição                 |
+| ------ | --------------------------- | ------------------------- |
+| `GET`  | `/api/candidatos`           | Lista todos os candidatos |
+| `GET`  | `/api/candidatos/:id`       | Detalhes de um candidato  |
+| `POST` | `/api/candidatos`           | Cria um novo candidato    |
+| `POST` | `/api/candidatos/parse-pdf` | Extrai dados de um PDF    |
 
 ---
 
@@ -185,8 +185,15 @@ A extração é baseada em heurísticas simples (regex) e pode não funcionar em
 ## 10. Exemplos de configuração (sem credenciais reais)
 
 ### `.env` do backend
+
 ```env
 DATABASE_URL="sqlserver://HOST:PORTA;database=NOME_DB;user=USUARIO;password=SENHA;trustServerCertificate=true"
 PORT=3001
 FRONTEND_URL=http://localhost:5173
 ```
+
+## 11. Contato
+
+- [Email](mailto:luccasfialho@gmail.com)
+
+- [LinkedIn](https://www.linkedin.com/in/luccas-fialho)
