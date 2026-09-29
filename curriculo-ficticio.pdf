@@ -1,0 +1,76 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Length 1559 >>
+stream
+BT
+/F1 12 Tf
+50 750 Td
+14 TL
+(Ana Paula Ferreira) Tj T*
+() Tj T*
+(E-mail: ana.paula.ferreira@email.com) Tj T*
+(Telefone: \(11\) 98765-4321) Tj T*
+(Área de interesse: Desenvolvedora Full Stack) Tj T*
+() Tj T*
+(RESUMO PROFISSIONAL) Tj T*
+(Desenvolvedora Full Stack com 4 anos de experiência em projetos web.) Tj T*
+(Especializada em React, Node.js, e bancos de dados relacionais.) Tj T*
+(Apaixonada por boas práticas de código e entrega de valor ao usuário.) Tj T*
+() Tj T*
+(EXPERIÊNCIA PROFISSIONAL) Tj T*
+() Tj T*
+(Desenvolvedora Frontend Sênior  TechSolutions Ltda \(2022-2024\)) Tj T*
+(- Liderou o desenvolvimento de uma plataforma SaaS com React e TypeScript) Tj T*
+(- Reduziu o tempo de carregamento em 40% com otimizações de performance) Tj T*
+(- Mentoria de 3 desenvolvedores juniores) Tj T*
+() Tj T*
+(Desenvolvedora Web  StartupXYZ \(2020-2022\)) Tj T*
+(- Desenvolveu APIs RESTful com Node.js e Express) Tj T*
+(- Integração com PostgreSQL e Redis) Tj T*
+(- Participação ativa em code reviews e planejamento de sprints) Tj T*
+() Tj T*
+(FORMAÇÃO ACADÊMICA) Tj T*
+(Bacharelado em Ciência da Computação  USP \(2016-2020\)) Tj T*
+() Tj T*
+(HABILIDADES TÉCNICAS) Tj T*
+(Frontend: React, TypeScript, Tailwind CSS, Next.js) Tj T*
+(Backend: Node.js, Express, NestJS) Tj T*
+(Banco de Dados: PostgreSQL, MySQL, SQL Server, MongoDB) Tj T*
+(DevOps: Docker, GitHub Actions, AWS \(básico\)) Tj T*
+(Metodologias: Scrum, Kanban, TDD) Tj T*
+() Tj T*
+(IDIOMAS) Tj T*
+(Português: Nativo) Tj T*
+(Inglês: Avançado \(leitura técnica, conversação intermediária\)) Tj T*
+ET
+endstream
+endobj
+3 0 obj
+<< /Type /Page /Parent 4 0 R
+   /MediaBox [0 0 595 842]
+   /Contents 2 0 R
+   /Resources << /Font << /F1 1 0 R >> >> >>
+endobj
+4 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+5 0 obj
+<< /Type /Catalog /Pages 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000079 00000 n 
+0000001689 00000 n 
+0000001824 00000 n 
+0000001881 00000 n 
+
+trailer
+<< /Size 6 /Root 5 0 R >>
+startxref
+1930
+%%EOF
