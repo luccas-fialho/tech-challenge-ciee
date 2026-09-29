@@ -157,3 +157,20 @@ A extração de dados do PDF é baseada em **heurísticas simples** e tem limita
 - [ ] Testes do componente React (React Testing Library)
 - [ ] Melhorar extração de nome com NLP
 - [ ] Adicionar suporte a OCR para PDFs escaneados
+
+---
+
+## 8. Correções Realizadas Pós-Entrega Inicial (Troubleshooting)
+
+Ao realizar os testes finais de integração, foram identificados e corrigidos dois bugs importantes:
+
+1. **Bug nos Detalhes do Candidato:** O frontend não exibia as informações após clicar em "Ver Detalhes".
+   - *Causa:* O backend empacota todas as respostas dentro de um objeto `{ data: ... }` (padrão de API). O arquivo `api.js` do frontend estava retornando `response.data`, fazendo com que os componentes esperassem campos na raiz, quando na verdade estavam dentro de `dados.data`.
+   - *Correção:* Ajustado o `api.js` para retornar sempre `response.data.data`.
+
+2. **Bug na Extração de Dados do PDF:** O parsing falhava e retornava mensagem de arquivo não enviado, além de ser frágil em PDFs reais.
+   - *Causa 1:* O `FormData` do frontend enviava o arquivo com a chave `'pdf'`, mas o `multer` do backend esperava a chave `'curriculo'`.
+   - *Causa 2:* As heurísticas de RegEx para telefone capturavam falsos-positivos e a heurística de nome capturava palavras como "Currículo".
+   - *Correção:* Alinhado o nome do campo para `'curriculo'` no frontend, atualizada a RegEx de telefone e adicionado um filtro de palavras ignoradas (como "curriculum", "vitae", etc) na leitura do PDF.
+
+Estas melhorias garantiram uma experiência robusta mesmo para PDFs fora do padrão fictício gerado e assegurou que as listagens renderizassem os valores corretamente.

@@ -13,7 +13,7 @@ const api = axios.create({
  */
 export async function listarCandidatos() {
   const response = await api.get('/candidatos')
-  return response.data
+  return response.data.data
 }
 
 /**
@@ -23,7 +23,7 @@ export async function listarCandidatos() {
  */
 export async function buscarCandidato(id) {
   const response = await api.get(`/candidatos/${id}`)
-  return response.data
+  return response.data.data
 }
 
 /**
@@ -33,7 +33,7 @@ export async function buscarCandidato(id) {
  */
 export async function criarCandidato(data) {
   const response = await api.post('/candidatos', data)
-  return response.data
+  return response.data.data
 }
 
 /**
@@ -43,14 +43,14 @@ export async function criarCandidato(data) {
  */
 export async function parsePdf(file) {
   const formData = new FormData()
-  formData.append('pdf', file)
+  formData.append('curriculo', file)
 
   const response = await api.post('/candidatos/parse-pdf', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   })
-  return response.data
+  return response.data.data
 }
 
 export default api

@@ -16,7 +16,7 @@ model Candidato {
   email              String   @unique @db.NVarChar(255)
   telefone           String?  @db.NVarChar(20)
   areaInteresse      String?  @db.NVarChar(255)
-  resumoProfissional String?  @db.NVarChar(5000)
+  resumoProfissional String?  @db.NVarChar(Max)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }

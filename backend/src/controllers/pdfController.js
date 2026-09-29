@@ -37,14 +37,27 @@ function extrairCampos(texto) {
   const emailMatch = texto.match(emailRegex);
   const email = emailMatch ? emailMatch[0] : null;
 
-  // Telefone: suporta formatos (11) 99999-9999, 11 9 9999-9999, +55 11 99999999, etc.
-  const telefoneRegex = /(\(?\d{2}\)?[\s.-]?)?[\d\s.-]{8,}/;
+  // Telefone: foca em formatos válidos no Brasil com ou sem DDD
+  const telefoneRegex = /(?:\+?55\s?)?(?:\(?\d{2}\)?[\s.-]?)?\d{4,5}[\s.-]?\d{4}/;
   const telefoneMatch = texto.match(telefoneRegex);
   const telefone = telefoneMatch ? telefoneMatch[0].trim() : null;
 
-  // Nome: primeira linha não vazia — heurística simples (ver limitações acima)
+  // Nome: primeira linha com tamanho razoável que não seja "currículo"
   const linhas = texto.split('\n').map((l) => l.trim()).filter(Boolean);
-  const nomeCompleto = linhas.length > 0 ? linhas[0] : null;
+  let nomeCompleto = null;
+  const palavrasIgnoradas = ['curriculo', 'curriculum', 'vitae', 'resume', 'dados pessoais'];
+  
+  for (const linha of linhas) {
+    const textoLimpo = linha.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (linha.length < 3 || linha.length > 100) continue;
+    if (palavrasIgnoradas.some((p) => textoLimpo.includes(p))) continue;
+    // Evita pegar linhas que são apenas números ou links
+    if (/^[\d\s\W]+$/.test(linha)) continue;
+    if (linha.includes('http')) continue;
+    
+    nomeCompleto = linha;
+    break;
+  }
 
   return { nomeCompleto, email, telefone };
 }
