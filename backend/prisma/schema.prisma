@@ -1,0 +1,22 @@
+// Gerador do schema Prisma para SQL Server
+// Tabela: Candidato — representa um candidato cadastrado no sistema de currículos
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Candidato {
+  id                 Int      @id @default(autoincrement())
+  nomeCompleto       String   @db.NVarChar(255)
+  email              String   @unique @db.NVarChar(255)
+  telefone           String?  @db.NVarChar(20)
+  areaInteresse      String?  @db.NVarChar(255)
+  resumoProfissional String?  @db.NVarChar(5000)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
