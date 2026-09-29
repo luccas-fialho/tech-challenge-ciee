@@ -20,9 +20,6 @@ build/
 # Coverage
 coverage/
 
-# Prisma generated migrations SQL (keep directory structure)
-prisma/migrations/**/*.sql
-
 # OS
 .DS_Store
 Thumbs.db
