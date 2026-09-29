@@ -37,31 +37,39 @@ function extrairCampos(texto) {
   const emailMatch = texto.match(emailRegex);
   const email = emailMatch ? emailMatch[0] : null;
 
-  // Telefone: foca em formatos válidos no Brasil com ou sem DDD, muito mais tolerante a espaços
-  const telefoneRegex = /(?:\+?[\d]{1,3}\s?)?(?:\(?\d{2,3}\)?[\s.-]?)?\d{4,5}[\s.-]?\d{4}/;
-  const telefoneMatch = texto.match(telefoneRegex);
+  // Telefone: Pega qualquer sequência que tenha entre 8 e 15 números, ignorando espaços, traços e parênteses
+  // Isso cobre praticamente todos os formatos globais e mal formatados
+  const textSemLetras = texto.replace(/[A-Za-z]/g, '');
+  const telefoneRegex = /(?:\+?\d{1,3})?[\s.-]?\(?\d{2,3}\)?[\s.-]?\d{4,5}[\s.-]?\d{4}/;
+  const telefoneMatch = textSemLetras.match(telefoneRegex);
   const telefone = telefoneMatch ? telefoneMatch[0].trim() : null;
 
   // Nome: pega a primeira linha não numerica que aparente ter nome e sobrenome
   const linhas = texto.split('\n').map((l) => l.trim()).filter(Boolean);
   let nomeCompleto = null;
-  const palavrasIgnoradas = ['curriculo', 'curriculum', 'vitae', 'resume', 'dados pessoais', 'perfil', 'portifolio', 'github'];
+  const palavrasIgnoradas = ['curriculo', 'curriculum', 'vitae', 'resume', 'dados pessoais', 'perfil', 'portifolio', 'github', 'contato', 'brasileiro', 'solteiro', 'casado'];
   
   for (const linha of linhas) {
     const textoLimpo = linha.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     
     // Ignora linhas muito curtas ou muito longas
-    if (linha.length < 3 || linha.length > 80) continue;
+    if (linha.length < 4 || linha.length > 60) continue;
     // Ignora se contém palavras de cabeçalho
     if (palavrasIgnoradas.some((p) => textoLimpo.includes(p))) continue;
     // Ignora se for link, e-mail ou composto de muitos números/símbolos
     if (linha.includes('@') || linha.includes('http') || /[\d:;!?_-]/.test(linha)) continue;
     
-    // Assume que um nome possui pelo menos um espaço (Nome Sobrenome)
+    // Assume que um nome possui pelo menos um espaço (Nome Sobrenome) e não tem pontuações bizarras
     if (linha.trim().includes(' ')) {
       nomeCompleto = linha;
       break;
     }
+  }
+
+  // Fallback para caso o nome ainda seja null (pega a primeira linha plausível)
+  if (!nomeCompleto && linhas.length > 0) {
+    const fallback = linhas.find(l => l.length > 3 && l.length < 50 && !l.includes('@') && !/\d/.test(l));
+    nomeCompleto = fallback || null;
   }
 
   return { nomeCompleto, email, telefone };
